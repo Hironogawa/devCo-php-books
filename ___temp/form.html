@@ -1,0 +1,112 @@
+<form action="index.php" method="post">
+    <table class="table">
+        <thead>
+            <tr class="table-dark">
+                <th scope="col">ISNBN 123A-123-123-1234</th>
+                <th scope="col">Harriet Putter / Petra Grimes</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style='width: 300px;'>Genre</td>";
+                    <td>
+                        <select id='genre' name='genre'>
+                            <option value='horror'>Horror</option>
+                            <option value='biography'>Biography</option>
+                            <option value='adventure'>Adventure</option>
+                        </select>
+                    </td>
+                    <td><textarea name='description' rows='10' cols='30'>...</textarea></td>
+                    <td>
+                        <input type='radio' id='currency_chf' name='currency' value='19.00'>
+                        <label for='currency_chf'>CHF</label><br>
+                        <input type='radio' id='currency_usd' name='currency' value='22.00'>
+                        <label for='currency_usd'>USD</label><br>
+                    </td>
+                    <td> 
+                        <input type='checkbox' id='available' name='available' value='available'>
+                        <label for='available'>Available</label><br>
+                        <input type='checkbox' id='sold-out' name='sold-out' value='sold-out'>
+                        <label for='sold-out'>Sold Out</label><br>
+                    </td>
+                </tr>";
+        </tbody>
+    </table> 
+
+    <input class="btn btn-primary" type="submit" value="Speichern">  
+    <button type="button" class="btn btn-info"
+        onclick="document.location='index.php';">Speichern</button>
+</form>    
+
+
+
+<form action="index.php" method="post">
+    <table class="table">
+        <thead>
+            <tr class="table-dark">
+                <th scope="col">ISNBN <?php echo $row['ISBN']; ?></th>
+                <th scope="col"><?php echo $row['title']; ?> / <?php echo $row['author']; ?></th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+                // Generiere die Tabelle: linke Spalte für Beschriftung / rechte Spalte für die Werte
+                foreach ($row as $columnName => $value) {
+                    $translatedColumnName = translateColumnName($columnName);
+
+                    echo "<tr>";
+                    echo "<td style='width: 300px;'>$translatedColumnName</td>";
+
+                    /*
+                        genre:          dropdown (<select><option>)
+                        description:    type "textarea"
+                        currency:       type "radio"
+                        out_of_print:   type "checkbox"
+                    */
+                    switch ($columnName) {
+                        case "genre":
+                            echo "<td>
+                                <select id='genre' name='genre'>
+                                    <option value='horror'>Horror</option>
+                                    <option value='biography'>Biography</option>
+                                    <option value='adventure'>Adventure</option>
+                                </select>
+                            </td>";
+                            break;
+
+                        case "description":
+                            echo "<td><textarea name='description' rows='10' cols='30'>$value</textarea></td>";
+                            break;
+
+                        case "currency":
+                            echo "<td>
+                                <input type='radio' id='currency_chf' name='currency' value='$value'>
+                                <label for='currency_chf'>CHF</label><br>
+                                <input type='radio' id='currency_usd' name='currency' value='$value'>
+                                <label for='currency_usd'>USD</label><br>
+                            </td>";
+                            break;     
+
+                        case "out_of_print":
+                            echo "<td> 
+                                <input type='checkbox' id='sold-out' name='sold-out' value='$value'>
+                                <label for='sold-out'>Available</label><br>
+                                <input type='checkbox' id='sold-out' name='sold-out' value='$value'>
+                                <label for='sold-out'>Sold Out</label><br>
+                            </td>";
+                            break;
+
+                        default:
+                            echo "<td><input type='text' name='$columnName' value='$value'></td>";
+                    }
+
+                    echo "</tr>";
+                }
+            ?>
+        </tbody>
+    </table> 
+
+    <input class="btn btn-primary" type="submit" value="Speichern">  
+    <button type="button" class="btn btn-info"
+        onclick="document.location='index.php';">Zurück</button>
+</form> 
